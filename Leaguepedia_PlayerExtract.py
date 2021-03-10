@@ -6,7 +6,6 @@ pp = pprint.PrettyPrinter(indent=4)
 
 
 def GetBaseData():
-
     site = mwclient.Site('lol.gamepedia.com', path='/')
     response = site.api('cargoquery',
         limit = "max",
@@ -51,8 +50,7 @@ def CreateCalculatedFields(match):
 
 
 def CreatePlayerCsv(tournament, response):
-
-    with open(tournament + '.csv', 'w') as csvOutput:
+    with open(tournament.replace(' ', '-') + '.csv', 'w', newline='') as csvOutput:
         writer = csv.writer(csvOutput)
         writer.writerow(GetColumns(includeDerived = True))
     
@@ -62,7 +60,6 @@ def CreatePlayerCsv(tournament, response):
             dataRowList = [match[attribute] for attribute in GetColumns(includeDerived = False)]
             dataRowList.extend(CreateCalculatedFields(match))
             dataRowList.extend(CreateFantasyScores(match))
-
             writer.writerow(dataRowList)
         
     print('CSV Output Created')
